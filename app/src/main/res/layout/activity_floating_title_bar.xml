@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <com.zandbee.vstrokova.floatingtitlebartest.ObservableScrollView
+        android:id="@+id/floating_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/floating_scroll_child"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/floating_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/autumn"/>
+
+                <LinearLayout
+                    android:id="@+id/body_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/floating_img"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="13dp"
+                    android:paddingLeft="70dp"
+                    android:paddingRight="13dp"
+                    android:paddingTop="13dp">
+
+                    <TextView
+                        android:id="@+id/test_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="George Formby, OBE (born George Hoy Booth; 26 May 1904 – 6 March 1961), was an English actor, singer-songwriter and comedian who became known to a worldwide audience through his films of the 1930s and 1940s. On stage, screen and record he sang light, comical songs, usually playing the ukulele or banjolele, and became the UK's highest-paid entertainer.
+Born in Wigan, Lancashire, he was the son of George Formby Snr, from whom he later took his stage name. After an early career as a stable boy and jockey, Formby took to the music hall stage after the early death of his father in 1921. His early performances were taken exclusively from his father's act, including the same songs, jokes and characters. In 1923 he made two career-changing decisions – he purchased a ukulele, and married Beryl Ingham, a fellow-performer who became his manager and transformed his act. She insisted that he appear on stage formally dressed, and introduced the ukulele to his performance. He started his recording career in 1926 and, from 1934, he increasingly worked in film to develop into a major star by the late 1930s and 1940s, and became the UK's most popular entertainer during those decades. The media historian Brian McFarlane writes that on film, Formby portrayed the gormless Lancastrian innocent who would win through against some form of villainy, gaining the affection of an attractive middle-class girl in the process.
+During the Second World War Formby worked extensively for the Entertainments National Service Association (ENSA), and entertained civilians and troops, and by 1946 it was estimated that he had performed in front of three million service personnel. After the war his career declined, although he toured the Commonwealth, and continued to appear in variety and pantomime. His last television appearance was in December 1960, two weeks before the death of Beryl. He surprised people by announcing his engagement to a school teacher seven weeks after Beryl's funeral, but died in Preston three weeks later, at the age of 56; he was buried in Warrington, alongside his father.
+Formby's biographer, Jeffrey Richards, considers that the actor had been able to embody simultaneously Lancashire, the working classes, the people, and the nation.[1] Formby was considered Britain's first properly home-grown screen comedian. He was an influence on future comedians—particularly Charlie Drake and Norman Wisdom—and, culturally, on entertainers such as the Beatles, who referred to him in their music. Since his death Formby has been the subject of five biographies, two television specials and two works of public sculpture."
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/title_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <View
+                        android:id="@+id/title_background_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"/>
+
+                    <TextView
+                        android:id="@+id/floating_title_bar_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingBottom="13dp"
+                        android:paddingLeft="70dp"
+                        android:paddingRight="13dp"
+                        android:paddingTop="13dp"
+                        android:textColor="@android:color/white"
+                        android:text="HELLO! I'm George Formby (born George Hoy Booth; 26 May 1904 – 6 March 1961)"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                </FrameLayout>
+
+                <ImageButton
+                    android:id="@+id/join_group_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/add_fab_background"
+                    android:src="@android:drawable/ic_input_add"/>
+
+            </RelativeLayout>
+
+
+        </FrameLayout>
+    </com.zandbee.vstrokova.floatingtitlebartest.ObservableScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
+
+</FrameLayout>

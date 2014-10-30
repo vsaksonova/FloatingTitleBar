@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material.Light">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+
+        <item name="android:colorAccent">#ffff8800</item>
+        <item name="android:colorPrimary">#ffff1166</item>
+        <item name="android:colorPrimaryDark">#ff990000</item>
+
+        <item name="android:textColorPrimary">#ffffffff</item>
+    </style>
+</resources>

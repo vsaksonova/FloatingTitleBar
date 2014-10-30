@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+
+        <item name="colorAccent">#ffff8800</item>
+        <item name="colorPrimary">#ffff1166</item>
+        <item name="colorPrimaryDark">#ff990000</item>
+
+        <item name="android:textColorPrimary">#ffffffff</item>
+
+    </style>
+
+</resources>
