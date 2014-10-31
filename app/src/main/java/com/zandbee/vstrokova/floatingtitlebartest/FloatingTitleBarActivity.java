@@ -1,11 +1,35 @@
 package com.zandbee.vstrokova.floatingtitlebartest;
 
+/*
+ * Copyright 2014 Zandbee
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import android.animation.ObjectAnimator;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.graphics.Palette;
+import android.support.v7.graphics.Palette.PaletteAsyncListener;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
@@ -20,31 +44,31 @@ import android.widget.TextView;
 
 import com.zandbee.vstrokova.floatingtitlebartest.ObservableScrollView.Callbacks;
 
-/**
- * Created by Veronika Strokova on 27.10.2014.
- */
 public class FloatingTitleBarActivity extends ActionBarActivity implements Callbacks {
 
+    // the container for everything except for a toolbar
     protected ObservableScrollView scrollView;
     protected ImageView imageView;
-    protected TextView titleView;
-    protected TextView bodyTextView;
-    protected LinearLayout bodyLayout;
-    protected ImageButton joinButton;
-    protected Toolbar toolbar;
-    protected View titleBackground;
+    // title layout: can contain subtitles, etc.
     protected FrameLayout titleLayout;
-
-    protected ProgressDrawable pd;
-    protected int statusBarHeight;
-    protected int imageViewHeight;
-    protected int titleViewHeight;
-    protected int titleLayoutHeight;
-    protected int toolbarHeight;
-    protected int joinButtonCenterHeight;
-    protected int[] location = new int[2];
+    // title background color
+    protected View titleBackground;
+    // title text
+    protected TextView titleView;
+    // content layout: place the views you need into it
+    protected LinearLayout bodyLayout;
+    protected TextView bodyTextView;
+    protected ImageButton quasiFab;
+    protected Toolbar toolbar;
 
     private boolean titleInUpperPosition = false;
+    protected ProgressDrawable titleBackDrawable;
+    private int titleBackColor;
+    private int statusBarHeight;
+    private int titleViewHeight;
+    private int toolbarHeight;
+    private int quasiFabCenterHeight;
+    private int[] location = new int[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +83,19 @@ public class FloatingTitleBarActivity extends ActionBarActivity implements Callb
 
         imageView = (ImageView) root.findViewById(R.id.floating_img);
 
-        bodyTextView = (TextView) root.findViewById(R.id.test_text);
         bodyLayout = (LinearLayout) root.findViewById(R.id.body_layout);
-        joinButton = (ImageButton) root.findViewById(R.id.join_group_button);
+        bodyTextView = (TextView) root.findViewById(R.id.test_text);
 
-        statusBarHeight = getStatusBarHeight();
+        quasiFab = (ImageButton) root.findViewById(R.id.join_group_button);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        titleView = (TextView) findViewById(R.id.floating_title_bar_text);
-
         titleLayout = (FrameLayout) findViewById(R.id.title_layout);
-
+        titleView = (TextView) findViewById(R.id.floating_title_bar_text);
         titleBackground = findViewById(R.id.title_background_view);
+
+        statusBarHeight = getStatusBarHeight();
     }
 
     @Override
@@ -84,24 +107,31 @@ public class FloatingTitleBarActivity extends ActionBarActivity implements Callb
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            imageViewHeight = imageView.getHeight();
             titleViewHeight = titleView.getHeight();
-            titleLayoutHeight = titleLayout.getHeight();
             toolbarHeight = toolbar.getHeight();
-            joinButtonCenterHeight = joinButton.getHeight() / 2;
-            //titleView.setTranslationY(imageView.getBottom() - titleViewHeight);
+            quasiFabCenterHeight = quasiFab.getHeight() / 2;
             titleLayout.setTranslationY(imageView.getBottom() - titleViewHeight - toolbarHeight);
-            joinButton.setTranslationY(imageView.getBottom() - joinButtonCenterHeight);
+            quasiFab.setTranslationY(imageView.getBottom() - quasiFabCenterHeight);
 
             final LayoutParams layoutParams = titleBackground.getLayoutParams();
             layoutParams.height = titleViewHeight + toolbarHeight;
             titleBackground.setLayoutParams(layoutParams);
 
-            // get color with Picasso
-            pd = new ProgressDrawable(getThemePrimaryColor());
-            pd.setMax(titleViewHeight + toolbarHeight);
-            pd.setProgress(toolbarHeight);
-            titleBackground.setBackground(pd);
+            Palette.generateAsync(drawableToBitmap(imageView.getDrawable()), new PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    titleBackColor = palette.getVibrantColor(0);
+                    if (titleBackColor != 0) {
+                        titleBackDrawable = new ProgressDrawable(titleBackColor);
+                    } else {
+                        titleBackDrawable = new ProgressDrawable(getThemePrimaryColor());
+                    }
+
+                    titleBackDrawable.setMax(titleViewHeight + toolbarHeight);
+                    titleBackDrawable.setProgress(toolbarHeight);
+                    titleBackground.setBackground(titleBackDrawable);
+                }
+            });
         }
     }
 
@@ -109,54 +139,39 @@ public class FloatingTitleBarActivity extends ActionBarActivity implements Callb
     public void onScrollChanged(int deltaX, int deltaY) {
         final int scrollY = scrollView.getScrollY();
 
-        final int bodyViewY = getLocationYonScreen(bodyLayout);
-        final int toolbarY = getLocationYonScreen(toolbar);
-
-        // title has not yet collided with toolbar
-        if (bodyViewY <= (toolbarHeight + titleViewHeight)) {
-            final int titleTop = scrollY + toolbarHeight;
-            //titleView.setTranslationY(titleTop);
+        /** title is going up and has not yet collided with a toolbar */
+        if (getLocationYonScreen(bodyLayout) <= (toolbarHeight + titleViewHeight)) {
             titleLayout.setTranslationY(scrollY);
-            joinButton.setTranslationY(titleTop + titleViewHeight - joinButtonCenterHeight);
+            quasiFab.setTranslationY(scrollY + toolbarHeight + titleViewHeight - quasiFabCenterHeight);
 
-            if (!titleInUpperPosition && deltaY > 0) {
+            // TODO try without delta
+            if (!titleInUpperPosition
+                    //&& deltaY > 0
+                    ) {
                 titleInUpperPosition = true;
-
-                final ObjectAnimator animPd = ObjectAnimator.ofFloat(pd, "progress", pd.max - titleViewHeight, 0f);
+                final ObjectAnimator animPd = ObjectAnimator.ofFloat(titleBackDrawable, "progress", titleBackDrawable.max - titleViewHeight, 0f);
                 animPd.setInterpolator(new DecelerateInterpolator(2f));
                 animPd.setDuration(200).start();
             }
-
         }
 
-        final int titleY = getLocationYonScreen(titleView);
-        if (titleInUpperPosition && titleY > (toolbarHeight + toolbarY) && deltaY < 0) {
+        /** title is going down */
+        if (titleInUpperPosition && getLocationYonScreen(titleView) > toolbarHeight
+                // + getLocationYonScreen(toolbar)
+                && deltaY < 0) {
             titleInUpperPosition = false;
-
-            final ObjectAnimator animPd = ObjectAnimator.ofFloat(pd, "progress", 0f, pd.max - titleViewHeight);
+            final ObjectAnimator animPd = ObjectAnimator.ofFloat(titleBackDrawable, "progress", 0f, titleBackDrawable.max - titleViewHeight);
             animPd.setInterpolator(new AccelerateDecelerateInterpolator());
             animPd.setDuration(250).start();
         }
 
-        /*if (bodyViewY >= imageViewHeight) {
-            titleView.setTranslationY(imageView.getBottom() - titleViewHeight);
-            joinButton.setTranslationY(imageView.getBottom() - joinButtonCenterHeight);
-        }*/
-
         imageView.setTranslationY(scrollY * 0.5f);
     }
 
+    /** @return the view's location taking the status bar into account */
     private int getLocationYonScreen(View view) {
         view.getLocationOnScreen(location);
         return location[1] - statusBarHeight;
-    }
-
-    private int getActionBarHeight() {
-        final TypedValue tv = new TypedValue();
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            return TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-        }
-        return 0;
     }
 
     private int getStatusBarHeight() {
@@ -173,5 +188,18 @@ public class FloatingTitleBarActivity extends ActionBarActivity implements Callb
         int[] attribute = new int[] { R.attr.colorPrimary };
         final TypedArray array = obtainStyledAttributes(typedValue.resourceId, attribute);
         return array.getColor(0, Color.MAGENTA);
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        final Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }

@@ -11,7 +11,7 @@
         <item name="colorPrimary">#ffff1166</item>
         <item name="colorPrimaryDark">#ff990000</item>
 
-        <item name="android:textColorPrimary">#ffffffff</item>
+        <item name="android:textColorPrimary">#ff662200</item>
 
     </style>
 

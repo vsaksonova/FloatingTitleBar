@@ -22,9 +22,9 @@
                 <ImageView
                     android:id="@+id/floating_img"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="@dimen/dp300"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/autumn"/>
+                    android:src="@drawable/koks"/>
 
                 <LinearLayout
                     android:id="@+id/body_layout"
@@ -33,10 +33,10 @@
                     android:layout_below="@+id/floating_img"
                     android:background="@android:color/white"
                     android:orientation="vertical"
-                    android:paddingBottom="13dp"
-                    android:paddingLeft="70dp"
-                    android:paddingRight="13dp"
-                    android:paddingTop="13dp">
+                    android:paddingBottom="@dimen/dp16"
+                    android:paddingLeft="@dimen/dp72"
+                    android:paddingRight="@dimen/dp16"
+                    android:paddingTop="@dimen/dp16">
 
                     <TextView
                         android:id="@+id/test_text"
@@ -67,25 +67,25 @@ Formby's biographer, Jeffrey Richards, considers that the actor had been able to
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:fontFamily="sans-serif-light"
-                        android:paddingBottom="13dp"
-                        android:paddingLeft="70dp"
-                        android:paddingRight="13dp"
-                        android:paddingTop="13dp"
+                        android:paddingBottom="@dimen/dp13"
+                        android:paddingLeft="@dimen/dp72"
+                        android:paddingRight="@dimen/dp16"
+                        android:paddingTop="@dimen/dp13"
                         android:textColor="@android:color/white"
-                        android:text="HELLO! I'm George Formby (born George Hoy Booth; 26 May 1904 – 6 March 1961)"
+                        android:text="George Formby (born George Hoy Booth; 26 May 1904 – 6 March 1961)"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light" />
 
                 </FrameLayout>
 
                 <ImageButton
                     android:id="@+id/join_group_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_width="@dimen/dp56"
+                    android:layout_height="@dimen/dp56"
+                    android:layout_marginLeft="@dimen/dp10"
                     android:background="@drawable/add_fab_background"
-                    android:src="@android:drawable/ic_input_add"/>
+                    android:src="@drawable/ic_action_new" />
 
             </RelativeLayout>
 
