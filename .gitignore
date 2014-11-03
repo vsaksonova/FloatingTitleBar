@@ -13,3 +13,7 @@ out/
 /settings.gradle
 /*.iml
 /gradle/
+/app/.gitignore
+/app/build.gradle
+/app/proguard-rules.pro
+/app/src/androidTest/java/com/zandbee/vstrokova/floatingtitlebartest/ApplicationTest.java
