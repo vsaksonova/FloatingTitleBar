@@ -12,3 +12,4 @@ out/
 /gradlew.bat
 /settings.gradle
 /*.iml
+/gradle/
