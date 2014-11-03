@@ -1,4 +1,4 @@
-package com.zandbee.vstrokova.floatingtitlebartest;
+package com.zandbee.floatingtitlebar;
 
 /*
  * Copyright 2014 Zandbee
@@ -33,6 +33,7 @@ import android.support.v7.graphics.Palette.PaletteAsyncListener;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -41,8 +42,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.zandbee.vstrokova.floatingtitlebartest.ObservableScrollView.Callbacks;
+import com.zandbee.floatingtitlebar.ObservableScrollView.Callbacks;
 
 public class FloatingTitleBarActivity extends ActionBarActivity implements Callbacks {
 
@@ -87,6 +89,12 @@ public class FloatingTitleBarActivity extends ActionBarActivity implements Callb
         bodyTextView = (TextView) root.findViewById(R.id.test_text);
 
         quasiFab = (ImageButton) root.findViewById(R.id.join_group_button);
+        quasiFab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "I do nothing", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

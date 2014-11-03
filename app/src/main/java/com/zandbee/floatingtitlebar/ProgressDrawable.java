@@ -1,4 +1,4 @@
-package com.zandbee.vstrokova.floatingtitlebartest;
+package com.zandbee.floatingtitlebar;
 
 /*
  * Copyright 2013 Andrew Neal

@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <com.zandbee.vstrokova.floatingtitlebartest.ObservableScrollView
+    <com.zandbee.floatingtitlebar.ObservableScrollView
         android:id="@+id/floating_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -91,7 +91,7 @@ Formby's biographer, Jeffrey Richards, considers that the actor had been able to
 
 
         </FrameLayout>
-    </com.zandbee.vstrokova.floatingtitlebartest.ObservableScrollView>
+    </com.zandbee.floatingtitlebar.ObservableScrollView>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

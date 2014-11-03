@@ -1,4 +1,4 @@
-package com.zandbee.vstrokova.floatingtitlebartest;
+package com.zandbee.floatingtitlebar;
 
 import android.content.Intent;
 import android.os.Bundle;
